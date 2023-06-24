@@ -35,29 +35,31 @@
 2.模型搭建和训练
 使用pytorch搭建自编码器网络，代码位于CDAE.py，其结构为
 
-Encoder
-Layers	Input channel	Output channel	Kernel size	Stride	Padding
+| Encoder  Layers | Input channel | Output channel | Kernel size | Stride | Padding |
+| --------------- | ------------- | -------------- | ----------- | ------ | ------- |
+| Conv2d          | 3             | 64             | (3, 3)      | (1, 1) | (1, 1)  |
+| ReLU            |               |                |             |        |         |
+| MaxPool2d       |               | 2              | 2           | 2      | 0       |
+| Conv2d          | 64            | 128            | (3, 3)      | (1, 1) | (1, 1)  |
+| ReLU            |               |                |             |        |         |
+| MaxPool2d       |               | 2              | 2           | 2      | 0       |
+| Conv2d          | 128           | 256            | (3, 3)      | (1, 1) | (1, 1)  |
+| ReLU            |               |                |             |        |         |
+| MaxPool2d       |               | 2              | 2           | 2      | 0       |
 
-Conv2d	3	64	(3, 3)	(1, 1)	(1, 1)
-ReLU					
-MaxPool2d		2	2	2	0
-Conv2d	64	128	(3, 3)	(1, 1)	(1, 1)
-ReLU					
-MaxPool2d		2	2	2	0
-Conv2d	128	256	(3, 3)	(1, 1)	(1, 1)
-ReLU					
-MaxPool2d		2	2	2	0
+ 
 
+ 
 
-Decoder
-Layers	Input channel	Output channel	Kernel size	Stride	Padding
+| Decoder  Layers | Input channel | Output channel | Kernel size | Stride | Padding |
+| --------------- | ------------- | -------------- | ----------- | ------ | ------- |
+| ConvTranspose2d | 256           | 128            | (3, 3)      | (2, 2) | (1, 1)  |
+| ReLU            |               |                |             |        |         |
+| ConvTranspose2d | 128           | 64             | (3, 3)      | (2, 2) | (1, 1)  |
+| ReLU            |               |                |             |        |         |
+| ConvTranspose2d | 64            | 3              | (3, 3)      | (2, 2) | (1, 1)  |
+| ReLU            |               |                |             |        |         |
 
-ConvTranspose2d	256	128	(3, 3)	(2, 2)	(1, 1)
-ReLU					
-ConvTranspose2d	128	64	(3, 3)	(2, 2)	(1, 1)
-ReLU					
-ConvTranspose2d	64	3	(3, 3)	(2, 2)	(1, 1)
-ReLU					
 
 训练过程使用重构均方误差作为损失函数，使用0.001的学习率，使用SGD作为优化器，weight_decay设置为0.01。对每个尺度的图像进行10个epoch的训练，由于时间问题本文没有做出可视化训练过程。相关代码为train.py。
 
